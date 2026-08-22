@@ -1,0 +1,45 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Secrets — never commit a key. A key in a commit is a key on the internet;
+# treat one that leaks as already spent and revoke it in AI Studio.
+# ─────────────────────────────────────────────────────────────────────────────
+.env
+.env.*
+!.env.example
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Instructor-only material. This is a student repo; these must never land here
+# even if a file is copied in by accident.
+# ─────────────────────────────────────────────────────────────────────────────
+*-instructor.ipynb
+*instructor*
+solutions.ipynb
+*-solutions.ipynb
+course-design/
+cohorts/
+roster.csv
+*.private.*
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Environment & build
+# ─────────────────────────────────────────────────────────────────────────────
+.venv/
+env/
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+node_modules/
+
+# Local vector store (session 8 runs Qdrant on your machine)
+.qdrant/
+qdrant_storage/
+
+# Scratch — keep the repo clean; put throwaway experiments here
+scratch/
+test.py
+*.log
+
+# ─────────────────────────────────────────────────────────────────────────────
+# OS noise
+# ─────────────────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
