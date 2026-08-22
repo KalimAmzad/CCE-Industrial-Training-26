@@ -7,17 +7,29 @@
 !.env.example
 
 # ─────────────────────────────────────────────────────────────────────────────
-# Instructor-only material. This is a student repo; these must never land here
-# even if a file is copied in by accident.
+# Instructor-only material — never ships, at any point in the course.
 # ─────────────────────────────────────────────────────────────────────────────
 *-instructor.ipynb
 *instructor*
-solutions.ipynb
-*-solutions.ipynb
 course-design/
 cohorts/
 roster.csv
 *.private.*
+
+# ─────────────────────────────────────────────────────────────────────────────
+# solutions.ipynb is deliberately NOT listed above.
+#
+# Solutions ship one session late: session N's solutions are published together
+# with session N+1, once that exercise has been reviewed in class. So the file
+# is withheld by *timing*, not by git.
+#
+# Ignoring it would be an expensive mistake — at the session 2 release
+# `git add session-01/solutions.ipynb` would silently do nothing, and the
+# omission would only surface when a student asked where the solutions were.
+#
+# What actually enforces the timing: only the intended files are copied into
+# this repo, and the full manifest is reviewed before every push.
+# ─────────────────────────────────────────────────────────────────────────────
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Environment & build
