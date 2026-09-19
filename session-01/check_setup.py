@@ -75,6 +75,7 @@ packages = [
     ("dotenv", "python-dotenv"),
     ("yaml", "pyyaml"),
     ("pydantic", "pydantic"),
+    ("pydantic_settings", "pydantic-settings"),   # typed configuration, from session 3
     ("mermaid", "mermaid-py"),       # notebook diagrams, from session 1
     ("PIL", "pillow"),               # showing the image the model reads/writes
     ("langchain", "langchain"),      # not used until session 4, checked now

@@ -67,9 +67,10 @@ diff -r session-05/project session-06/project
 Missed a session or fell behind? Open the folder for the session you're on — it runs on its own. You
 never need `git checkout` to catch up.
 
-Notebooks are committed **with their outputs cleared**, so every cell is yours to run. That is
-deliberate: reading an output teaches you much less than watching your own code produce it. If a cell
-misbehaves, `Kernel → Restart and Run All` before debugging anything else.
+Notebooks are committed **with their outputs**, so you can read any session without a key or quota,
+and compare what your run produced with what the instructor's did. Run every cell yourself anyway —
+watching your own code produce the output teaches far more than reading it. If a cell misbehaves,
+`Kernel → Restart and Run All` before debugging anything else.
 
 ## Session map
 
@@ -113,5 +114,6 @@ their own copy.
 | | What it is | First used |
 |---|---|---|
 | `data/tickets.yml` | 20 invented support tickets, hand-labelled with a ground-truth `category` | S01 |
+| `data/prices.yml` | token prices per model, with a `verified` date | S03 |
 | `data/images/` | photos a customer would attach to a ticket — e.g. headphones with a torn earcup pad | S01 §7.3 |
 | `data/policies/` | ShopWise's returns, warranty and shipping documents | S08 |
