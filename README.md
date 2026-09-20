@@ -34,6 +34,12 @@ If you see `AttributeError: 'Client' object has no attribute 'interactions'`, yo
 kernel — a different Python with an older `google-genai`. The first cell of every notebook prints
 which interpreter it is using, so check that before debugging anything else.
 
+From session 4 the same mistake has a second disguise. An Anaconda kernel usually carries LangChain
+0.3, where `langchain.messages` does not exist and the Gemini client reads only `GOOGLE_API_KEY` —
+so a `.env` holding `GEMINI_API_KEY` looks empty and the call fails with a Google *"default
+credentials were not found"* error that says nothing about kernels. Session 4's setup cell stops
+you there and names the kernel to pick.
+
 Keys are **yours**, created in your own accounts — we walk through every signup in session. Never
 commit `.env`; it's gitignored, keep it that way.
 
