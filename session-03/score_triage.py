@@ -129,7 +129,7 @@ def main() -> int:
     from config import settings
 
     if not settings.has_key:
-        print("No GEMINI_API_KEY found. Put it in labs/.env and try again.")
+        print("No GEMINI_API_KEY found. Put it in .env and try again.")
         return 1
 
     client = utils.build_client()

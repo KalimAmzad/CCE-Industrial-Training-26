@@ -19,7 +19,7 @@ def build_model():
 
     `settings.model_id` is the provider string ("google_genai:gemini-3.1-flash-lite")
     and the only place the vendor is named. Change SHOPWISE_PROVIDER / SHOPWISE_MODEL
-    in labs/.env and every call goes somewhere else. `timeout` is in seconds here;
+    in .env and every call goes somewhere else. `timeout` is in seconds here;
     `max_retries` covers transport failures only.
     """
     return init_chat_model(

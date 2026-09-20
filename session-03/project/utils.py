@@ -51,7 +51,7 @@ def load_tickets() -> list[dict]:
 
 
 def load_prices() -> dict[str, dict]:
-    """Token prices per model, from labs/data/prices.yml."""
+    """Token prices per model, from data/prices.yml."""
     rows = yaml.safe_load((settings.DATA_DIR / "prices.yml").read_text(encoding="utf-8"))
     return {r["id"]: r for r in rows}
 

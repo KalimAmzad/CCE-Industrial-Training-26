@@ -7,38 +7,81 @@ customer-support assistant), grown across 16 sessions.
 
 Sessions are published here as they are delivered, so expect this repo to grow week by week.
 
-## Setup (once)
+## Setup (once — about 15 minutes)
 
-We use [uv](https://docs.astral.sh/uv/) — one command builds the environment for all 16 sessions
-from `pyproject.toml` and `uv.lock`, so everyone in the cohort ends up on identical versions.
+You install four things. **Python is not one of them.** `uv` downloads the exact version this course
+runs on; installing Python yourself is the most common way to end up with two of them and a kernel
+that fails in week 4.
+
+| | What | Why | Get it |
+|---|---|---|---|
+| 1 | **Cursor** or **VS Code** | where you open and run the notebooks | [cursor.com](https://cursor.com) · [code.visualstudio.com](https://code.visualstudio.com) |
+| 2 | **Git** | how you get this repo, and each new session as it lands | [git-scm.com/downloads](https://git-scm.com/downloads) |
+| 3 | **uv** | builds the Python environment in one command | step 1 below |
+| 4 | **Gemini API key** | free, no card | [aistudio.google.com/apikey](https://aistudio.google.com/apikey) |
+
+### 1. Install uv
+
+**macOS / Linux** — open Terminal:
 
 ```bash
-git clone git@github.com:KalimAmzad/CCE-Industrial-Training-26.git
-cd CCE-Industrial-Training-26
-
-uv sync                    # creates .venv and installs everything. ~1 minute.
-cp .env.example .env       # then paste your Gemini key into .env
-uv run jupyter lab         # then pick the .venv kernel — see below
+curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
-Install once, at the repo root. There is no per-session install — week 8's dependencies are already
-there, so no session ever opens with a failed `pip install`.
+**Windows** — open PowerShell:
 
-### Pick the right kernel — this is the #1 cause of broken cells
+```powershell
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
 
-`uv sync` installs into `.venv` at the repo root. Your notebook must run **that** Python, not a
-system or Anaconda one. In Jupyter: **Kernel → Change Kernel** and choose the interpreter whose path
-ends in `CCE-Industrial-Training-26/.venv/bin/python`. In VS Code: click the kernel name, top right.
+**Then close that window and open a new one.** The installer edits your PATH and the window you ran
+it in still has the old one. Confirm with `uv --version`.
 
-If you see `AttributeError: 'Client' object has no attribute 'interactions'`, you are on the wrong
-kernel — a different Python with an older `google-genai`. The first cell of every notebook prints
-which interpreter it is using, so check that before debugging anything else.
+### 2. Get the repo
 
-From session 4 the same mistake has a second disguise. An Anaconda kernel usually carries LangChain
-0.3, where `langchain.messages` does not exist and the Gemini client reads only `GOOGLE_API_KEY` —
-so a `.env` holding `GEMINI_API_KEY` looks empty and the call fails with a Google *"default
-credentials were not found"* error that says nothing about kernels. Session 4's setup cell stops
-you there and names the kernel to pick.
+This repo is private, so you must be signed in to the GitHub account you gave us. The editor does
+the sign-in for you — no SSH keys, no tokens:
+
+**Ctrl/Cmd+Shift+P** → type `Git: Clone` → paste the URL below → sign in when the browser opens →
+pick a folder → **Open**.
+
+```
+https://github.com/KalimAmzad/CCE-Industrial-Training-26.git
+```
+
+New sessions appear here as they are taught. To collect them: **Source Control** panel → `⋯` →
+**Pull**, or `git pull` in the terminal. Your own `.env` and your notebook edits are never touched
+by a pull.
+
+### 3. Add the two extensions
+
+**Ctrl/Cmd+Shift+X** opens Extensions. Search for and install **Python** and **Jupyter** (both
+published by Microsoft). Cursor and VS Code both need them; without Jupyter an `.ipynb` file opens
+as unreadable JSON.
+
+### 4. Build the environment
+
+Open the built-in terminal — **Ctrl+`** — check the prompt is in the repo folder, and run:
+
+```bash
+uv sync
+```
+
+About a minute and roughly 1 GB. It reads `pyproject.toml` and `uv.lock`, downloads Python 3.12 if
+your machine hasn't got it, creates `.venv/` and installs every package all 16 sessions need. There
+is no per-session install: week 8's dependencies are already there, so no session ever opens with a
+failed `pip install`, and everyone in the cohort is on identical versions.
+
+### 5. Put your key in .env
+
+```bash
+cp .env.example .env            # macOS / Linux
+Copy-Item .env.example .env     # Windows PowerShell
+```
+
+Open `.env` in the editor and paste your key after `GEMINI_API_KEY=` — no quotes, no spaces. That
+one key is enough for sessions 1–3; session 4 adds a free LangSmith account and the file explains
+every other line when you get there.
 
 Keys are **yours**, created in your own accounts — we walk through every signup in session. Never
 commit `.env`; it's gitignored, keep it that way.
@@ -47,6 +90,44 @@ commit `.env`; it's gitignored, keep it that way.
 > used to improve our products" as **Yes** for the free tier and **No** for paid. Never paste real
 > customer data, real names, or anything belonging to an employer into a free-tier notebook. Every
 > ticket in `data/tickets.yml` is invented for this reason.
+
+### 6. Check it before class
+
+```bash
+cd session-01
+uv run python check_setup.py
+```
+
+It prints PASS or FAIL for the Python version, the environment, every package, your `.env`, your key
+and the shared data files — and tells you exactly what to do about each FAIL. It talks to no network
+and spends no quota, so run it as often as you like. Fix the first FAIL and run it again; a later
+one is often a symptom of an earlier one.
+
+### 7. Open a notebook and pick the kernel
+
+Open `session-01/session-01.ipynb`. Top right of the notebook: **Select Kernel** → **Python
+Environments** → the one whose path ends in `CCE-Industrial-Training-26/.venv` (usually marked
+*recommended*). Run a cell with **Shift+Enter**.
+
+Prefer the browser? `uv run jupyter lab`, then **Kernel → Change Kernel** and choose the same
+`.venv`.
+
+### The kernel is the #1 cause of broken cells
+
+`uv sync` installed everything into `.venv` at the repo root. Your notebook has to run **that**
+Python — not a system one, and above all not Anaconda's. Every notebook's first cell prints the
+interpreter it is using, so read that before debugging anything else.
+
+| what you see | what it means | fix |
+|---|---|---|
+| `uv: command not found` | PATH from before the install | close the terminal, open a new one |
+| `.ipynb` opens as JSON | Jupyter extension missing | step 3 |
+| `ModuleNotFoundError: langchain` | wrong kernel | step 7 |
+| `AttributeError: 'Client' object has no attribute 'interactions'` | wrong kernel — an older `google-genai` | step 7 |
+| `DefaultCredentialsError: Your default credentials were not found` (session 4+) | wrong kernel — Anaconda ships LangChain 0.3, which reads only `GOOGLE_API_KEY` and never sees your `GEMINI_API_KEY` | step 7 |
+
+That last one names neither LangChain nor the kernel, which is why session 4's setup cell now stops
+you at the first cell and tells you which kernel to pick.
 
 ## How to work
 

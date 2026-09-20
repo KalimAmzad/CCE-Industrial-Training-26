@@ -276,7 +276,7 @@ def main() -> int:
     args = parser.parse_args()
 
     if settings.PROVIDER == "google_genai" and not settings.has_key:
-        print("No GEMINI_API_KEY found. Put it in labs/.env and try again.")
+        print("No GEMINI_API_KEY found. Put it in .env and try again.")
         return 1
 
     model = project.build_model()

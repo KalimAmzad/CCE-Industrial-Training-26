@@ -29,7 +29,7 @@ from dotenv import load_dotenv
 import config
 
 HERE = Path(__file__).resolve().parent
-# labs/session-02/project/ -> labs/ . The fixture and the key live at the tree
+# session-02/project/ -> repo root . The fixture and the key live at the tree
 # root: snapshots never keep their own copy of the data (ADR-0001).
 LABS = HERE.parent.parent
 TICKETS_PATH = LABS / "data" / "tickets.yml"
@@ -79,7 +79,7 @@ def main() -> int:
 
     load_dotenv(LABS / ".env")
     if not os.getenv("GEMINI_API_KEY"):
-        print("No GEMINI_API_KEY found. Put it in labs/.env and try again.")
+        print("No GEMINI_API_KEY found. Put it in .env and try again.")
         return 1
 
     from google import genai

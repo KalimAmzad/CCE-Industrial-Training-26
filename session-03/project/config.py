@@ -26,7 +26,7 @@ from dotenv import load_dotenv
 from pydantic import Field, SecretStr, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-# labs/session-03/project/config.py -> labs/
+# session-03/project/config.py -> repo root
 LABS = Path(__file__).resolve().parent.parent.parent
 
 

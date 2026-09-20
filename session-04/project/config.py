@@ -7,7 +7,7 @@ model into LangChain's one string:
     init_chat_model("google_genai:gemini-3.1-flash-lite")
                      └─ provider ─┘ └────── model ──────┘
 
-Moving ShopWise to another vendor is two lines in labs/.env and no code change.
+Moving ShopWise to another vendor is two lines in .env and no code change.
 Two more things arrive for tracing: `PROMPT_VERSION` (an override for the label
 stamped on every run) and the three `LANGSMITH_*` fields.
 
@@ -30,7 +30,7 @@ from dotenv import load_dotenv
 from pydantic import Field, SecretStr, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-# labs/session-04/project/config.py -> labs/
+# session-04/project/config.py -> repo root
 LABS = Path(__file__).resolve().parent.parent.parent
 
 

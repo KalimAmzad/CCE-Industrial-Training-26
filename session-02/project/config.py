@@ -3,7 +3,7 @@
 Constants only. No logic, no imports beyond os, nothing that can fail.
 
 Every value is read from the environment with a default, so when Google retires a
-model the fix is one line in `labs/.env` rather than an edit in every snapshot:
+model the fix is one line in `.env` rather than an edit in every snapshot:
 
     SHOPWISE_MODEL=gemini-3.5-flash
 

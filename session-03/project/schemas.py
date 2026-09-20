@@ -4,7 +4,7 @@
 makes it the graph's triage output, session 13 the API response model. Do not
 rename its fields.
 
-The nine categories are the hand labels in labs/data/tickets.yml (docs/adr/0003).
+The nine categories are the hand labels in data/tickets.yml (docs/adr/0003).
 
 Field order matters: the model writes JSON top to bottom, so a field can only be
 informed by the fields above it. Decisions first, `summary` last.
