@@ -2,8 +2,8 @@
   <img src="assets/logo.png" width="84" alt="Grow with Data">
 </p>
 
-<h1 align="center">AI/LLM Application Builder</h1>
-<p align="center"><b>From Zero to Mastery</b></p>
+<h1 align="center">AI/LLM Application Builder - From Zero to Mastery</h1>
+<p align="center"><b></b></p>
 
 <p align="center">
   8 weeks · 16 sessions · 32 contact hours · Saturday &amp; Sunday, 7:30–9:30 PM · live, instructor-led<br>
@@ -37,7 +37,7 @@ it is taught.
 |---|---|---|
 | 1 | [**Cursor**](https://cursor.com) or [**VS Code**](https://code.visualstudio.com) | where you run the notebooks |
 | 2 | [**Git**](https://git-scm.com/downloads) | to get this repo and each new session |
-| 3 | **uv** | builds the Python environment (step 1 below) |
+| 3 | [**uv**](https://docs.astral.sh/uv/) | builds the Python environment (step 1 below) |
 | 4 | [**Gemini API key**](https://aistudio.google.com/apikey) | free, no card |
 
 > **Do not install Python.** `uv` downloads the exact version this course uses. Installing your own
