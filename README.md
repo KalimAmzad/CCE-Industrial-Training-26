@@ -3,10 +3,10 @@
 </p>
 
 <h1 align="center">AI/LLM Application Builder</h1>
-<p align="center"><b>From Zero to Mastery</b> — student workspace</p>
+<p align="center"><b>From Zero to Mastery</b></p>
 
 <p align="center">
-  8 weeks · 16 sessions · 32 contact hours · Friday &amp; Saturday, 7:30–9:30 PM · live, instructor-led<br>
+  8 weeks · 16 sessions · 32 contact hours · Saturday &amp; Sunday, 7:30–9:30 PM · live, instructor-led<br>
   <sub>Industrial training for the Department of Computer &amp; Communication Engineering</sub>
 </p>
 
