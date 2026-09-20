@@ -1,17 +1,33 @@
-# AI/LLM Application Builder — student workspace
+<p align="center">
+  <img src="assets/logo.png" width="84" alt="Grow with Data">
+</p>
 
-**CCE Industrial Training 2026 · Grow with Data · instructor: Md Kalim Amzad Chy**
+<h1 align="center">AI/LLM Application Builder</h1>
+<p align="center"><b>From Zero to Mastery</b> — student workspace</p>
+
+<p align="center">
+  8 weeks · 16 sessions · 32 contact hours · Friday &amp; Saturday, 7:30–9:30 PM · live, instructor-led<br>
+  <sub>Industrial training for the Department of Computer &amp; Communication Engineering</sub>
+</p>
+
+<p align="center">
+  <a href="https://growwithdata.net"><b>Grow with Data</b></a> ·
+  <a href="https://kalimamzad.com">Md Kalim Amzad Chy</a> ·
+  <a href="https://linkedin.com/in/kalimamzad">LinkedIn</a> ·
+  <a href="brochure.html">Brochure</a> ·
+  <a href="https://how-llm-works.kalimamzad.com/">How LLMs work</a>
+</p>
+
+---
 
 One project, **ShopWise** — an e-commerce customer-support assistant — built across 16 sessions,
 from a first API call to a deployed app with a React front end. Each session lands here on the day
 it is taught.
 
-- **New to LLMs?** Watch [how-llm-works.kalimamzad.com](https://how-llm-works.kalimamzad.com/)
-  first — a separate talk on how a language model actually works. No code, and it makes session 1
-  much easier.
+- **New to LLMs?** Start with [**How LLMs work**](https://how-llm-works.kalimamzad.com/) — a
+  separate talk, no code, and it makes session 1 land properly.
 - **Class recordings** are shared after each session.
-- **Everything installs once.** There is no per-session setup.
-- **What the programme is:** the [brochure](brochure.html) — 8 weeks, 16 sessions, one system.
+- **Everything installs once.** There is no per-session setup, and no Python to install.
 
 ---
 
@@ -49,7 +65,8 @@ Close the terminal and open a new one — the installer changes your PATH. Check
 - **Windows:** clone into a plain folder such as `C:\dev\`, **not** a OneDrive-synced Desktop or
   Documents. OneDrive syncing a 1 GB `.venv` will break the environment and crawl.
 
-**3 · Add two extensions** — **Ctrl/Cmd+Shift+X**, install **Python** and **Jupyter**. Without
+**3 · Add two editor extensions** — **Ctrl/Cmd+Shift+X**, install **Python** and **Jupyter**. These
+are plugins for Cursor/VS Code, *not* Python itself — they teach the editor to run notebooks. Without
 Jupyter, `.ipynb` files open as unreadable JSON.
 
 **4 · Build the environment** — open the terminal (**Ctrl+`**) in the repo folder:
@@ -58,9 +75,14 @@ Jupyter, `.ipynb` files open as unreadable JSON.
 uv sync
 ```
 
-~1 minute on a good connection, and about 1 GB — have 2 GB free. It installs every package for all
-16 sessions, so no session opens with a failed install and the whole cohort is on identical
-versions. If it dies halfway, run it again; it picks up where it stopped.
+**This is where Python arrives.** uv reads `requires-python = ">=3.12"` from `pyproject.toml`,
+downloads a matching Python if your machine hasn't got one, and builds `.venv/` from it. The
+download lands in uv's own folder — nothing is installed system-wide, and no other Python on your
+machine is touched.
+
+Then it installs every package for all 16 sessions from `uv.lock`, so no session opens with a failed
+install and the whole cohort is on identical versions. ~1 minute on a good connection and about
+1 GB — have 2 GB free. If it dies halfway, run it again; it picks up where it stopped.
 
 **5 · Add your key**
 
@@ -82,9 +104,49 @@ uv run python check_setup.py
 PASS/FAIL for every requirement, with the fix printed beside each failure. Uses no network and no
 quota. Fix the first FAIL, run again.
 
-**7 · Open a notebook** — `session-01/session-01.ipynb` → **Select Kernel** (top right) → **Python
-Environments** → the one ending in `CCE-Industrial-Training-26/.venv` → **Shift+Enter** to run a
-cell. Prefer the browser? `uv run jupyter lab`.
+**7 · Open a notebook** — either way works, use whichever you prefer.
+
+**In the editor** — open `session-01/session-01.ipynb` → **Select Kernel**, top right → **Python
+Environments** → the one ending in `CCE-Industrial-Training-26/.venv` → **Shift+Enter** runs a cell.
+
+**In the browser** — JupyterLab, from the repo root:
+
+```bash
+uv run jupyter lab
+```
+
+It opens in your browser; click any `session-NN/session-NN.ipynb`. There is **no kernel to pick** —
+started this way, Jupyter is already running inside `.venv`, and that is the kernel the notebooks
+ask for. Stop it with **Ctrl+C** in the terminal when you're done.
+
+### Running code: `uv run` or activate
+
+Both work. `uv run` is the one to learn.
+
+```bash
+uv run python check_setup.py          # no activation, ever
+```
+
+- Works from **any folder inside the repo** — uv walks up to `pyproject.toml` and uses *this*
+  project's `.venv`, whichever session folder you are in.
+- Checks the environment matches `uv.lock` first, so a missing package installs itself.
+- **Outside the repo it does not.** Run it from your home folder and uv falls back to whatever
+  Python it can find — which is how you end up running Anaconda's. `cd` into the repo first.
+
+```bash
+source .venv/bin/activate     # macOS / Linux
+.venv\Scripts\activate        # Windows
+python check_setup.py
+deactivate
+```
+
+- The classic way. Your prompt shows `(.venv)` while it is on, and stays that way until you
+  `deactivate` or close the window.
+- Same interpreter, same packages — just manual. Forget to activate and `python` is your system
+  one, with none of this installed.
+
+Notebooks are the same idea by other means: `uv run jupyter lab` launches the browser route, and
+the editor's kernel picker points at the same `.venv`.
 
 ### If something breaks
 
