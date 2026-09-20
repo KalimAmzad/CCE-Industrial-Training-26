@@ -11,6 +11,7 @@ it is taught.
   much easier.
 - **Class recordings** are shared after each session.
 - **Everything installs once.** There is no per-session setup.
+- **What the programme is:** the [brochure](brochure.html) — 8 weeks, 16 sessions, one system.
 
 ---
 
@@ -43,8 +44,10 @@ Close the terminal and open a new one — the installer changes your PATH. Check
 - In Cursor/VS Code: **Ctrl/Cmd+Shift+P** → `Git: Clone` → paste the URL → sign in when the browser
   opens → pick a folder → **Open**.
 - URL: `https://github.com/KalimAmzad/CCE-Industrial-Training-26.git`
-- Each week, get the new session: **Source Control** → `⋯` → **Pull** (or `git pull`). Your `.env`
-  and your own edits are never touched.
+- Each week, get the new session: **Source Control** → `⋯` → **Pull** (or `git pull`).
+- Clone refused? Your GitHub account isn't on the repo yet — send your username to your instructor.
+- **Windows:** clone into a plain folder such as `C:\dev\`, **not** a OneDrive-synced Desktop or
+  Documents. OneDrive syncing a 1 GB `.venv` will break the environment and crawl.
 
 **3 · Add two extensions** — **Ctrl/Cmd+Shift+X**, install **Python** and **Jupyter**. Without
 Jupyter, `.ipynb` files open as unreadable JSON.
@@ -55,8 +58,9 @@ Jupyter, `.ipynb` files open as unreadable JSON.
 uv sync
 ```
 
-~1 minute, ~1 GB. Installs every package for all 16 sessions, so no session opens with a failed
-install and the whole cohort is on identical versions.
+~1 minute on a good connection, and about 1 GB — have 2 GB free. It installs every package for all
+16 sessions, so no session opens with a failed install and the whole cohort is on identical
+versions. If it dies halfway, run it again; it picks up where it stopped.
 
 **5 · Add your key**
 
@@ -95,6 +99,29 @@ Anaconda one. Every notebook's first cell prints which interpreter it is using �
 | `AttributeError: 'Client' object has no attribute 'interactions'` | wrong kernel, older `google-genai` — step 7 |
 | `DefaultCredentialsError: Your default credentials were not found` | wrong kernel: Anaconda ships LangChain 0.3, which never reads `GEMINI_API_KEY` — step 7 |
 | A cell misbehaves | **Kernel → Restart and Run All** before debugging |
+| `Repository not found` when cloning | your GitHub account isn't on the repo — send your username to your instructor |
+| `429` / `RESOURCE_EXHAUSTED` | free-tier rate limit. Wait a minute and re-run — you have not broken anything |
+| You pasted the key but a cell still says no key | restart the kernel — see below |
+| `uv sync` stops partway | run it again; it resumes |
+
+### Two habits that prevent most of it
+
+**Restart the kernel after editing `.env`.** Python reads that file once, when the notebook first
+imports it. Edit the key with the notebook open and the running kernel still holds the old value —
+**Kernel → Restart**, then run from the top.
+
+**Keep your own work in a copy.** Before you experiment in a lesson notebook, duplicate it:
+`session-04/my-session-04.ipynb`. Next week's `git pull` updates the files we ship, and git will
+refuse to overwrite one you have edited. If that happens:
+
+```bash
+git stash        # park your changes
+git pull
+git stash pop    # bring them back (resolve any conflict in the editor)
+```
+
+Still stuck? Screenshot the **whole** error and bring it to the next session. A setup problem is
+worth ten minutes of class time and never a whole evening of yours.
 
 ---
 
@@ -187,13 +214,10 @@ notebooks should cost you nothing.
 
 ---
 
-## Shared data
+## Program brochure
 
-One copy for the whole course, in `data/`. Session folders read from it; they never carry their own.
+What the programme covers, who runs it, and what ShopWise is — useful when someone asks what you
+spent eight weeks on.
 
-| | What it is | From |
-|---|---|---|
-| `data/tickets.yml` | 20 invented support tickets, hand-labelled with a ground-truth `category` | S01 |
-| `data/prices.yml` | token prices per model, with a `verified` date | S03 |
-| `data/images/` | photos a customer would attach — headphones with a torn earcup pad | S01 |
-| `data/policies/` | ShopWise's returns, warranty and shipping documents | S08 |
+- [`brochure.html`](brochure.html) — any browser, works offline
+- [`brochure.pdf`](brochure.pdf) — 5 pages, for printing or forwarding
