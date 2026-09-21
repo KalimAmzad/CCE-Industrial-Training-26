@@ -3,7 +3,6 @@
 </p>
 
 <h1 align="center">AI/LLM Application Builder - From Zero to Mastery</h1>
-<p align="center"><b></b></p>
 
 <p align="center">
   8 weeks · 16 sessions · 32 contact hours · Saturday &amp; Sunday, 7:30–9:30 PM · live, instructor-led<br>
@@ -230,7 +229,7 @@ and the presentation.
 
 ## Session map
 
-Two sessions a week, Friday + Saturday, 19:30–21:30.
+Two sessions a week, Saturday + Sunday, 19:30–21:30.
 
 | # | Session | What you learn | ShopWise |
 |---|---|---|---|
