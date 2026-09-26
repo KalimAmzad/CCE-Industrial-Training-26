@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Session 2 — Talking to the machines · AI/LLM Application Builder</title>
+<title>Session 5 — Give it hands · AI/LLM Application Builder</title>
 <!--
   Self-contained slide deck. No build step, no server, no network.
   Double-click to open; works offline in a classroom.
@@ -15,11 +15,17 @@
 
   SCOPE: this deck carries the *presentation* — the story and the concepts. It
   deliberately does NOT reproduce the notebook. Every code demo lives in
-  session-02.ipynb; the deck signposts when to switch to it.
+  session-05.ipynb; the deck signposts when to switch to it.
 
-  It also does NOT re-teach session 1's provider landscape, leaderboards or
-  capability tour. That material shipped with committed outputs; repeating it
-  costs twelve minutes and teaches nothing new.
+  Six slides after the cover, deliberately. Session 5 is a long hands-on evening
+  — a backend, seven tools, the loop built by hand, then broken on purpose — and
+  the deck is the choreography around it, not a second copy of the teaching.
+  Every number and every quoted output on a slide came from a committed notebook
+  output, not from recall. Slide 3 is the one that must survive a slow room.
+
+  TIMINGS ARE ADVISORY. The pedagogy contract withdrew the 110-minute cap, so
+  these are rough durations, not a budget that has to add up. If slide 3 runs
+  long, let it: cut slide 6's structured-output material to the exercise sheet.
 -->
 <style>
   *{margin:0;padding:0;box-sizing:border-box}
@@ -266,8 +272,6 @@
 <div class="progress" id="prog"></div>
 <div class="deck" id="deck">
 
-
-
 <section class="slide cover" data-title="Cover">
   <div class="top">
     <div class="brandrow">
@@ -294,10 +298,9 @@
 
   <div class="btm">
     <div class="sesscard">
-      <div class="n">Session 2 of 16 · Week 1, Saturday</div>
-      <div class="t">Talking to the machines</div>
-      <div class="d">Messages, roles and the system prompt — how you turn a brilliant, confident
-      stranger into an assistant that speaks for ShopWise and knows what it may not promise.</div>
+      <div class="n">Session 5 of 16 · Week 3, Friday</div>
+      <div class="t">Give it hands</div>
+      <div class="d">The model never executes anything — it asks, and your code acts. Tools, the agent loop built by hand, and what happens when a tool breaks.</div>
     </div>
 
     <div class="pres">
@@ -323,151 +326,214 @@
 </section>
 
 
-<!-- ═══ 2 · KEYS + TONIGHT'S SHAPE ════════════════════════════════════════ -->
-<section class="slide" data-title="Keys · tonight's shape">
-  <div class="kicker">First ten minutes</div>
-  <h2>Everyone gets a key before we teach anything</h2>
+<!-- ═══ 1 · A BRAIN WITH NO HANDS ═════════════════════════════════════════ -->
+<section class="slide" data-title="A brain with no hands">
+  <div class="kicker">Notebook section 2 · the failure-first opening</div>
+  <h2>It never checked a fact</h2>
   <div class="rule"></div>
-  <div class="grid g3">
-    <div class="card accent"><div class="t">1 · Issue</div><div class="d">aistudio.google.com/apikey — free tier, no card.</div></div>
-    <div class="card accent"><div class="t">2 · Store</div><div class="d">Into <code>.env</code> as <code>GEMINI_API_KEY</code>. Never in a notebook.</div></div>
-    <div class="card accent"><div class="t">3 · Verify</div><div class="d"><code>uv run python check_setup.py</code> — green before we start.</div></div>
-  </div>
-  <div class="card warn" style="margin-top:14px">
-    <div class="t">The trap that costs a session</div>
-    <div class="d">The SDK takes <code>GEMINI_API_KEY</code> <strong>or</strong> <code>GOOGLE_API_KEY</code> — and
-    <strong><code>GOOGLE_API_KEY</code> wins when both are set.</strong> A leftover key means someone
-    else's quota and confusing errors instead of a clean failure. Check for it now.</div>
-  </div>
-  <h3>How tonight runs — three blocks, not thirty switches</h3>
-  <div class="grid g3">
-    <div class="card"><div class="t">1 · Set the stakes</div><div class="d"><strong>28 min</strong> · slides, and one demo that should worry you</div></div>
-    <div class="card accent"><div class="t">2 · Hands on keyboards</div><div class="d"><strong>58 min</strong> · the notebook, one unbroken run. This is the session</div></div>
-    <div class="card"><div class="t">3 · Land it, ship v0.1</div><div class="d"><strong>24 min</strong> · what it all meant, then the assistant runs the real inbox</div></div>
-  </div>
-</section>
-
-<!-- ═══ 3 · THE PROMISE ═══════════════════════════════════════════════════ -->
-<section class="slide" data-title="The promise">
-  <div class="kicker">Collecting on last night's promise</div>
-  <h2>“…and it will answer — fluently, warmly, with total confidence, and completely invented.”</h2>
-  <div class="rule"></div>
-  <div class="grid g2">
-    <div class="card"><div class="t">Ask it bare</div>
-      <div class="d"><em>“What is ShopWise's return policy?”</em><br><br>
-      It <strong>hedges</strong> — and may quote the genuine policy of a real supermarket chain in
-      the Philippines.</div></div>
-    <div class="card warn"><div class="t">Add one sentence of role</div>
-      <div class="d"><em>“You are ShopWise customer support…”</em><br><br>
-      A confident <strong>30-day policy</strong>, conditions, a returns portal, a refund timeline.
-      <strong>All invented.</strong></div></div>
-  </div>
-  <p class="lead" style="margin-top:12px; margin-bottom:0">A true fact about the wrong company is
-  indistinguishable from an invented fact about the right one.</p>
-  <div class="switch">▶ <b>Notebook now</b> — section 1 setup, then section 2 live · 8 min</div>
-</section>
-
-<!-- ═══ 4 · STRUCTURAL + PICK A MODEL ═════════════════════════════════════ -->
-<section class="slide" data-title="Structural · pick a model">
-  <div class="kicker">The idea the session hangs on</div>
-  <h2>Hallucination is structural, not a bug</h2>
-  <div class="rule"></div>
-  <div class="card dark" style="margin-bottom:14px">
-    <div class="t">The instruction that makes an assistant useful is the same instruction that removes its reluctance to invent.</div>
-    <div class="d">A support agent does not hedge about their own return policy. Ask the model to
-    <em>be</em> one and it will state a policy — whether or not one exists.</div>
-  </div>
-  <h3>So — pick a model, on purpose</h3>
-  <p>capability × price × speed × context size × provider trust. <strong>Try the cheap model first;
-  move up only when you can name a task it fails.</strong> One ticket, two tiers, and you justify
-  your choice out loud. That is the memo your team lead asks for in week one.</p>
-</section>
-
-<!-- ═══ 5 · THE SURFACE SWITCH ════════════════════════════════════════════ -->
-<section class="slide" data-title="The surface switch">
-  <div class="kicker">Why our call looks different from last night's</div>
-  <h2>We switched API surface on purpose</h2>
-  <div class="rule"></div>
-  <div class="grid g2">
-    <div class="card"><div class="t">Session 1</div><div class="d"><code>client.interactions.create</code><br>A capability tour. Least ceremony per demo. Nothing carried forward.</div></div>
-    <div class="card accent"><div class="t">Session 2 → 16</div><div class="d"><code>client.models.generate_content</code><br>What session 4's framework is built on.</div></div>
-  </div>
-  <div class="card warn" style="margin-top:14px">
-    <div class="t">Google's own docs call ours “Legacy”. Say so before they read it.</div>
-    <div class="d">Two traps follow: <code>response_format</code> is an Interactions field and
-    <strong>raises <code>ValidationError</code></strong> here; and usage is
-    <code>usage_metadata.*_token_count</code>, not <code>interaction.usage.total_*</code>.</div>
-  </div>
-  <div class="switch">▶ <b>Notebook now — the long run.</b> Sections 3 to 7, about 58 minutes.
-  Two tiers · the first call · roles and statelessness · the 8 blocks · the staircase.
-  <b>Come back here for the payoff.</b></div>
-</section>
-
-<!-- ═══ 6 · THE PAYOFF ════════════════════════════════════════════════════ -->
-<section class="slide" data-title="The staircase payoff">
-  <div class="kicker">One ticket · four calls · one variable at a time</div>
-  <h2>What each block actually bought</h2>
-  <div class="rule"></div>
-  <div class="grid g2">
-    <div class="card warn"><div class="t">Step 0 — the unprompted model</div><div class="d">“I have looked into your account and confirmed a duplicate charge. I have initiated a refund of $129.00… 3–5 business days.”<br><br>
-    <strong>Claims a lookup. Promises money. Invents a timeframe.</strong></div></div>
-    <div class="card accent"><div class="t">Step 3 — guardrails and a fallback</div><div class="d">“Because I do not have access to your billing records, I am passing this to a colleague who can review your account…”<br><br>
-    <strong>Refuses to decide. Escalates. Commits to nothing.</strong></div></div>
-  </div>
-  <div class="card dark" style="margin-top:14px">
-    <div class="t">The step nobody predicts: step 2 makes it worse</div>
-    <div class="d">The format rule bought polish, and <strong>polish reads as authority</strong>. Making
-    output look more professional does not make it more truthful — it makes the untruth more
-    convincing.</div>
-  </div>
-</section>
-
-<!-- ═══ 7 · THE WALL ══════════════════════════════════════════════════════ -->
-<section class="slide" data-title="What a prompt can't fix">
-  <div class="kicker">The other half, honestly</div>
-  <h2>Great at / terrible at — and the session that fixes each</h2>
-  <div class="rule"></div>
-  <div class="grid g2">
-    <div class="card"><div class="t">Great at</div><div class="d">Rewriting · summarising · translating · classifying into your categories · drafting in a consistent voice · extracting structure from prose</div></div>
-    <div class="card warn"><div class="t">Terrible at</div><div class="d">Facts about <strong>your</strong> business → <strong>S08</strong> · arithmetic → <strong>S05</strong> · <em>doing</em> anything → <strong>S05</strong> · anything after its cutoff → <strong>S12</strong> · saying “I don't know” → <strong>S07 · S09</strong></div></div>
-  </div>
-  <p style="margin-top:14px">There is <strong>no clock</strong>. Ask it today's date and it answers
-  plausibly and wrongly — so it cannot tell a customer when an order arrives, or whether they are
-  inside a return window.</p>
-  <p style="color:var(--muted); margin-bottom:0"><strong>And the one that never goes away:</strong>
-  hallucination. Retrieval makes it rarer, guardrails catch some, evaluation measures it. Nothing
-  removes it — which is why there is always a human in the loop.</p>
-</section>
-
-<!-- ═══ 8 · v0.1 + HANDOFF ════════════════════════════════════════════════ -->
-<section class="slide" data-title="v0.1 · handoff">
-  <div class="kicker">Project version v0.1 · and where this breaks next</div>
-  <h2>The assistant becomes code</h2>
-  <div class="rule"></div>
-  <div class="grid g3">
-    <div class="card"><div class="t">config.py</div><div class="d">Model constants only. A retirement is <strong>one line</strong> in <code>.env</code>.</div></div>
-    <div class="card accent"><div class="t">prompts.yml</div><div class="d">The 8-block prompt. <strong>Prompt text never lives in Python.</strong></div></div>
-    <div class="card"><div class="t">reply.py</div><div class="d">Load → build history → loop the inbox → print.</div></div>
-  </div>
-  <p style="margin-top:12px"><strong>Its limits, each a future session:</strong> free text only
-  (<strong>S03</strong>) · no memory of facts (<strong>S08</strong>) · guardrails are prompt-only
-  (<strong>S07</strong>) · one provider, hand-written (<strong>S04</strong>).</p>
   <div class="card dark">
-    <div class="t">Your CTO reads the replies</div>
-    <div class="d">“Nice. Now I need a spreadsheet — which tickets are urgent? Which are billing,
-    which are shipping? <strong>Don't hand me paragraphs.</strong>” → session 3, structured output.</div>
+    <div class="t">Ayesha, in the inbox</div>
+    <div class="d">“Hi, I'm ayesha@example.com — where is my order <strong>ORD-5001</strong>?
+    It says delivered but I never got it.”</div>
   </div>
-  <div class="switch">▶ <b>Terminal</b> <code>cd session-02/project &amp;&amp; uv run python reply.py</code>
-  &nbsp;·&nbsp; <b>Then</b> notebook sections 8–10 &nbsp;·&nbsp; <b>Homework</b> exercises.ipynb, the ⭐⭐⭐</div>
+  <div class="grid g2" style="margin-top:14px">
+    <div class="card warn"><div class="t">v1, guarded</div><div class="d">Warm, blameless, escalates to a
+      human, promises nothing. Every session-2 guardrail working — and <strong>ShopWise learns nothing
+      it did not already know</strong>. There is no step in which any fact is checked.</div></div>
+    <div class="card accent"><div class="t">The answer exists</div><div class="d"><code>ORD-5001</code> is a
+      row in <code>data/backend.yml</code>, four directories away. <strong>Delivered
+      2026-07-19.</strong> One dictionary lookup.</div></div>
+  </div>
+  <div class="card warn" style="margin-top:12px">
+    <div class="t">And the guardrail was never the fix — take it off and ask for a fact it cannot deflect</div>
+    <div class="d">“Just the courier and the tracking number for ORD-5003.” <em>Three runs, temperature 1:</em></div>
+  </div>
+<pre><span class="c"># run 1, run 2, run 3 — identical</span>
+Courier: <span class="s">FedEx</span>
+Tracking Number: <span class="s">782940123567</span>
+
+<span class="c"># what ShopWise's records say</span>
+{"carrier": <span class="s">"SwiftEx"</span>, "tracking_id": <span class="s">"SW-88231"</span>, "eta": "2026-08-08"}</pre>
+  <p style="margin-top:10px"><strong>The same fabricated number three times.</strong> That is worse than
+  randomness: a flaky answer looks like a bug and someone investigates it; a stable, confident, wrong
+  one looks like data and gets forwarded to a customer.</p>
+  <div class="switch">▶ <b>Notebook now.</b> <b>Two big ideas tonight:</b> the agent loop —
+  the model asks, your code acts — and <b>tools that fail well</b>.</div>
 </section>
 
+<!-- ═══ 2 · THE ANATOMY OF A TOOL ═════════════════════════════════════════ -->
+<section class="slide" data-title="Anatomy of a tool">
+  <div class="kicker">Notebook sections 4–5</div>
+  <h2>Four parts, and the model reads all four</h2>
+  <div class="rule"></div>
+  <table>
+    <tr><th>part</th><th>why it is load-bearing</th></tr>
+    <tr><td><strong>the name</strong> — a verb</td><td>the first thing a question is matched against.
+      <code>get_order</code> beats <code>order_handler</code></td></tr>
+    <tr class="hi"><td><strong>typed arguments</strong></td><td><em>not documentation</em> — the type hints
+      <strong>become the JSON schema</strong> the model must fill in</td></tr>
+    <tr><td><strong>the docstring</strong></td><td>written <strong>for the model</strong>: when to use this,
+      and what comes back. It is the routing</td></tr>
+    <tr><td><strong>a plain-data return</strong></td><td>it is serialised to <em>text</em> on the way to the
+      model. That is why it is a dict and not a Pydantic object</td></tr>
+  </table>
+  <div class="grid g2" style="margin-top:12px">
+    <div class="card accent"><div class="t">A tool is still a normal function</div><div class="d">
+      <code>.name</code>, <code>.description</code>, <code>.invoke({...})</code> — no agent anywhere.
+      Test one here, where the traceback is yours and costs nothing.</div></div>
+    <div class="card warn"><div class="t">Two argument names you must not use</div><div class="d">
+      <code>config</code> is shown to the model, filled in by the model, then <strong>stripped</strong> —
+      <code>TypeError: missing 1 required positional argument: 'config'</code>. <code>runtime</code> raises a
+      Pydantic error naming <code>BaseStore</code>. <em>Rename the argument.</em></div></div>
+  </div>
+  <div class="card dark" style="margin-top:12px">
+    <div class="t">Seven contracts, six wired</div>
+    <div class="d"><code>lookup_customer · get_order · list_orders · get_shipment · get_product ·
+    check_refund_status</code> — and <strong><code>issue_refund</code>, which exists, works when called
+    directly, and is not in the list the agent receives.</strong> We do not give the new intern the company
+    chequebook on their first day. <em>Session 7 is where a human signs for it.</em></div>
+  </div>
+</section>
+
+<!-- ═══ 3 · THE MODEL ASKS, YOUR CODE ACTS ════════════════════════════════ -->
+<section class="slide" data-title="The model asks. Your code acts.">
+  <div class="kicker">Notebook section 6 · the manual loop</div>
+  <h2>What came back is not an answer</h2>
+  <div class="rule"></div>
+<pre>ai = model.bind_tools(TOOLS).invoke(messages)
+
+<span class="k">print</span>(ai.content)   <span class="c"># []       an empty LIST</span>
+<span class="k">print</span>(ai.text)      <span class="c"># ''       and no warning tells you</span>
+<span class="k">print</span>(ai.tool_calls)
+<span class="c"># [{'name': 'get_order', 'args': {'order_id': 'ORD-5001'}, 'id': ..., 'type': 'tool_call'}]</span></pre>
+  <p><strong>Nothing has been executed.</strong> <code>get_order</code> has not run, no dictionary has been
+  read, and the model has no idea what is in ORD-5001. It asked, and it stopped, and it is waiting for you.</p>
+  <table>
+    <tr><th>#</th><th>message</th><th>who wrote it</th><th>what it carries</th></tr>
+    <tr><td class="num">0</td><td>the question</td><td>the customer</td><td>the only thing not produced by this program</td></tr>
+    <tr><td class="num">1</td><td>the request</td><td>the model</td><td><em>no text at all</em> — the request is the content</td></tr>
+    <tr class="hi"><td class="num">2</td><td>the result</td><td><strong>your code</strong></td><td>what the tool returned, as JSON text</td></tr>
+    <tr><td class="num">3</td><td>the answer</td><td>the model</td><td>text, and no requests — which is how the loop ends</td></tr>
+  </table>
+  <div class="switch">▶ <b>Say it twice.</b> The model never executes anything. <b>It emits a request; your
+  code decides whether to honour it.</b> You can refuse — that is exactly how session 7 puts a human in
+  the loop.</div>
+</section>
+
+<!-- ═══ 4 · THE REVEAL ════════════════════════════════════════════════════ -->
+<section class="slide" data-title="create_agent is that loop">
+  <div class="kicker">Notebook sections 7–8</div>
+  <h2>The function is the loop you just wrote</h2>
+  <div class="rule"></div>
+  <div class="card accent">
+    <div class="t">Same four messages. The only thing that changed is who wrote the <code>for</code> loop.</div>
+    <div class="d"><code>create_agent</code> binds, invokes, executes what comes back, appends, and invokes
+    again — <strong>while there are still tool calls</strong>. The one thing it adds to what you wrote by
+    hand is the <code>while</code>.</div>
+  </div>
+<pre><span class="c"># "I'm ayesha@example.com — what did I order most recently and has it shipped?"</span>
+ASKS  lookup_customer({'email': 'ayesha@example.com'})   <span class="c">→ C-1001</span>
+ASKS  list_orders({'customer_id': 'C-1001'})             <span class="c">→ two orders</span>
+ASKS  get_order({'order_id': 'ORD-5002'})                <span class="c">→ two kettles</span>
+ASKS  get_shipment({'order_id': 'ORD-5002'})             <span class="c">→ {"error": "no shipment yet"}</span>
+<span class="c"># "your most recent order is ORD-5002 ... currently processing and has not yet shipped"</span></pre>
+  <p><strong>Nothing in the prompt describes that sequence.</strong> No plan, no chain, no orchestration
+  code — the model asked for a customer id because <code>list_orders</code>' docstring says it needs one.
+  <em>That is also the honest warning: a tool path is a model decision, not a contract.</em></p>
+  <div class="grid g2">
+    <div class="card warn"><div class="t">One invoke is not one call</div><div class="d">
+      <strong>5 model calls + 4 tool executions.</strong> Always hops + 1 — somebody has to write the answer
+      after the last lookup.</div></div>
+    <div class="card cyan"><div class="t">And the prompt grows every hop</div><div class="d">input tokens
+      <strong>1180 → 1262 → 1379 → 1504 → 1553</strong>. The model is stateless; the whole message list is
+      resent every time. <em>An unused tool is not free.</em></div></div>
+  </div>
+  <p style="margin-top:10px"><strong>6.54s wall clock, 99.9% of it model latency</strong> — the six tools
+  cost 6 milliseconds between them. That number is the justification for streaming in session 6.</p>
+</section>
+
+<!-- ═══ 5 · WHEN A TOOL BREAKS ════════════════════════════════════════════ -->
+<section class="slide" data-title="When a tool breaks">
+  <div class="kicker">Notebook section 9 · concept two</div>
+  <h2>Two ways to fail, and they are not alike</h2>
+  <div class="rule"></div>
+  <div class="grid g2">
+    <div class="card warn"><div class="t">raise → the run is over</div><div class="d">The exception travels
+      <strong>straight out of <code>agent.invoke()</code></strong>. The model is never reinvoked, the customer
+      gets nothing, and the traceback says <em>During task with name 'tools'</em> — the framework's frame, not
+      yours. Four successful lookups before the fifth one raised buy you nothing.</div></div>
+    <div class="card accent"><div class="t">return → the model reads it</div><div class="d">One more
+      <code>ToolMessage</code>, like any other. <strong>It recovers.</strong> Guessed
+      <code>get_product("BrewMaster kettle")</code> → error <em>carrying the catalogue</em> → corrected itself
+      to <code>"BrewMaster Electric Kettle"</code> → answered. <em>Nobody wrote a retry.</em></div></div>
+  </div>
+  <div class="card dark" style="margin-top:12px">
+    <div class="t">One question separates them</div>
+    <div class="d"><strong>Can the model do anything useful with this?</strong> If yes it is information —
+    return it. If no it is a fault, and handing it to a language model is delegating a decision that was
+    never the model's to make.</div>
+  </div>
+  <table style="margin-top:12px">
+    <tr><th>what happened</th><th>can the model act on it?</th><th>so</th></tr>
+    <tr><td>no order with that id · unknown email · ambiguous product</td><td>yes — ask, or offer what exists</td><td><code>return {"error": …}</code></td></tr>
+    <tr class="hi"><td><strong>out of stock</strong></td><td><strong>not an error at all</strong> — it is a fact</td><td><code>return {"stock": 0}</code></td></tr>
+    <tr><td>backend down · credentials rejected · a bug in your tool</td><td>no</td><td>raise, or stop in code</td></tr>
+  </table>
+  <p style="margin-top:10px"><strong>An error is a fact about your program. Not finding something is a fact
+  about the world.</strong> They read identically in a <code>ToolMessage</code> and they are not the same
+  thing. <em>Money, authorisation and anything destructive never go to the model: code decides.</em></p>
+</section>
+
+<!-- ═══ 6 · v2, AND THE CUSTOMER IT FORGETS ═══════════════════════════════ -->
+<section class="slide" data-title="v2, and the hook">
+  <div class="kicker">Notebook sections 10–13</div>
+  <h2>v2 — and the customer it does not remember</h2>
+  <div class="rule"></div>
+  <table>
+    <tr><th>v1</th><th>v2</th></tr>
+    <tr><td>invents order details, or apologises for not knowing</td><td>answers only from what it looked up</td></tr>
+    <tr><td>one question, one answer</td><td>chains lookups it was never told the order of</td></tr>
+    <tr><td>—</td><td>returns a typed <code>TriageResult</code> — <strong>session 3's schema, unchanged</strong></td></tr>
+    <tr><td>—</td><td>fails in a way you chose, not a way you discovered</td></tr>
+  </table>
+  <div class="grid g2" style="margin-top:12px">
+    <div class="card accent"><div class="t">The regression check you get free</div><div class="d">
+      <code>score_triage.py</code>, carried forward untouched: <strong>18/20 = 90%</strong>, the same two
+      misses as v1. The part that was not supposed to move did not move — and it can only say that because
+      each prompt now carries <strong>its own version</strong>.</div></div>
+    <div class="card warn"><div class="t">Two entry points, deliberately</div><div class="d">Triage classifies
+      an inbound ticket and is <em>scored</em>. The agent answers a question and is judged on
+      <em>groundedness</em>. Merge them and neither can be measured. <strong>ADR-0007.</strong></div></div>
+  </div>
+<pre>TANVIR    I'm tanvir@example.com — where is ORD-5003?
+ASSISTANT In transit with SwiftEx, tracking SW-88231, expected 8 August.
+
+TANVIR    And is that the one with the smartwatch in it?
+  ASKS    <span class="s">get_order({'order_id': 'ORD-5001'})</span>   <span class="c"># it guessed. that is AYESHA's order</span>
+ASSISTANT That order contains the AeroSound Pro Headphones,
+          but it does not include a smartwatch.</pre>
+  <p><strong>Grounded, confident, and wrong for the person asking</strong> — Tanvir's ORD-5003 <em>does</em>
+  contain the smartwatch, and the assistant said so itself thirty seconds ago. "That order" refers to
+  nothing, so the model supplied a referent the only way it could.</p>
+  <div class="card warn" style="margin-top:10px">
+    <div class="t">And look at whose order it read</div>
+    <div class="d"><code>ORD-5001</code> belongs to <strong>C-1001 — Ayesha</strong>. It was read out to
+    Tanvir without hesitating, because nothing in this design knows who it is talking to.
+    <strong>Grounding is not memory, and it is not authorisation.</strong> Session 6 fixes the first
+    half; session 7 is the second.</div>
+  </div>
+  <div class="switch">▶ <b>Interview question, asked because it separates people who have built an agent
+  from people who have read about one:</b> “So the model executes the function?” <b>No.</b> It emits a
+  request; your code decides whether to honour it — and <code>issue_refund</code> sitting outside
+  <code>TOOLS</code> is the proof.</div>
+</section>
 </div><!-- /deck -->
 
 <div class="zone l" id="zl" title="previous"></div>
 <div class="zone r" id="zr" title="next"></div>
 
 <div class="foot">
-  <div class="brand">Grow with Data · Session 2</div>
+  <div class="brand">Grow with Data · Session 5</div>
   <div class="mid"><span id="cur">1</span> / <span id="tot">20</span> · <span id="ttl"></span></div>
   <div><kbd>←</kbd> <kbd>→</kbd> move · <kbd>o</kbd> overview · <kbd>?</kbd> help</div>
 </div>
