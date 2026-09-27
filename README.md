@@ -238,7 +238,7 @@ Two sessions a week, Saturday + Sunday, 19:30–21:30.
 | S03 | From chat to software | structured output you can trust | v0.2 |
 | S04 | One interface to rule them all | the framework trade · observability | v1 |
 | S05 | Give it hands | tools and the agent loop | v2 |
-| S06 | Remember and respond | state and short-term memory | v3 |
+| S06 | Remember and respond | memory, streaming, and the context window | v3 |
 | S07 | Safety rails | middleware · human-in-the-loop | v4 |
 | S08 | It should know your policies | embeddings and retrieval | v5 |
 | S09 | Answer with receipts | grounded generation, with citations | v6 |
